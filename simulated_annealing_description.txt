@@ -1,0 +1,163 @@
+# THUẬT TOÁN SIMULATED ANNEALING (THUẬT TOÁN MÔ PHỎNG LUYỆN KIM)
+
+## I. ĐỊNH NGHĨA
+
+Simulated Annealing (SA) là một thuật toán tối ưu hóa xác suất, lấy cảm hứng từ quá trình luyện kim 
+trong vật lý, trong đó vật liệu được nung nóng và sau đó làm mát dần một cách có kiểm soát để tăng kích thước tinh thể và giảm các khuyết tật, từ đó làm giảm năng lượng của hệ thống.
+
+Trong lĩnh vực tối ưu hóa, SA được sử dụng để tìm xấp xỉ tối ưu toàn cục của một hàm trong một không gian tìm kiếm lớn, đặc biệt là khi không gian tìm kiếm rời rạc (như trong bài toán 8-puzzle).
+
+## II. NGUYÊN LÝ HOẠT ĐỘNG CHUNG
+
+Nguyên tắc cơ bản của SA là:
+
+1. Bắt đầu với một giải pháp ban đầu và một "nhiệt độ" cao.
+2. Tạo một giải pháp mới bằng cách thực hiện một sự thay đổi nhỏ.
+3. Nếu giải pháp mới tốt hơn, chấp nhận nó.
+4. Nếu giải pháp mới tệ hơn, vẫn có một xác suất để chấp nhận nó (phụ thuộc vào nhiệt độ hiện tại).
+5. Giảm nhiệt độ theo một lịch trình làm mát.
+6. Lặp lại các bước 2-5 cho đến khi đạt được điều kiện dừng.
+
+Đặc điểm quan trọng nhất của SA là khả năng chấp nhận các giải pháp tệ hơn với một xác suất nhất định, cho phép thuật toán thoát khỏi các cực tiểu cục bộ. Xác suất chấp nhận các giải pháp tệ hơn giảm dần khi nhiệt độ giảm, khiến thuật toán dần dần hội tụ về một cực tiểu.
+
+## III. CÁC BƯỚC THỰC HIỆN CHI TIẾT
+
+1. **Khởi tạo**:
+   - Chọn một giải pháp ban đầu s.
+   - Khởi tạo nhiệt độ ban đầu T0 (đủ cao).
+   - Chọn một hàm đánh giá f(s) để đo lường "chất lượng" của một giải pháp.
+
+2. **Vòng lặp chính**:
+   - Tại mỗi bước lặp, tạo ra một giải pháp mới s' từ giải pháp hiện tại s bằng cách thực hiện một sự thay đổi nhỏ.
+   - Tính sự thay đổi về năng lượng: ΔE = f(s') - f(s).
+   - Nếu ΔE < 0 (giải pháp mới tốt hơn), chấp nhận s'.
+   - Nếu ΔE > 0 (giải pháp mới tệ hơn), chấp nhận s' với xác suất P(ΔE, T) = e^(-ΔE/T).
+   - Cập nhật nhiệt độ: T = α * T, với α là tốc độ làm mát (0 < α < 1).
+
+3. **Điều kiện dừng**:
+   - Đã tìm thấy giải pháp tối ưu.
+   - Nhiệt độ đã giảm đến ngưỡng tối thiểu.
+   - Đã đạt số lần lặp tối đa.
+   - Không có cải thiện sau một số lần lặp nhất định.
+
+## IV. HÀM LÀM NGUỘI (COOLING SCHEDULE)
+
+Hàm làm nguội là một thành phần quan trọng quyết định hiệu suất của SA. Một số lịch trình làm mát phổ biến:
+
+1. **Làm mát tuyến tính**: T(t) = T0 - βt, với β là tốc độ làm mát.
+2. **Làm mát hàm mũ** (phổ biến nhất): T(t) = T0 * α^t, với α là tốc độ làm mát (thường từ 0.8 đến 0.99).
+3. **Làm mát logarit**: T(t) = T0 / log(t + 1).
+4. **Làm mát thích ứng**: Điều chỉnh tốc độ làm mát dựa trên tiến trình tìm kiếm.
+
+Trong triển khai thuật toán SA hiện tại, chúng ta sử dụng kết hợp giữa làm mát hàm mũ cơ bản và làm mát thích ứng:
+- Giai đoạn đầu: T = T * cooling_rate (làm mát chậm)
+- Giai đoạn sau: T = T * (cooling_rate^2) (làm mát nhanh hơn)
+- Định kỳ làm nóng lại nếu không có tiến triển: T = min(T * 1.5, initial_T / 2)
+
+## V. SIMULATED ANNEALING TRONG BÀI TOÁN 8-PUZZLE
+
+Trong bài toán 8-puzzle, SA được áp dụng như sau:
+
+1. **Biểu diễn trạng thái**: Mỗi trạng thái là một cấu hình của bảng 8-puzzle (ma trận 3x3).
+
+2. **Hàm đánh giá (heuristic)**: 
+   - Thường sử dụng khoảng cách Manhattan, đếm số ô bị xáo trộn, hoặc kết hợp các heuristic.
+   - Hàm đánh giá đo lường "khoảng cách" từ trạng thái hiện tại đến trạng thái đích.
+
+3. **Tạo trạng thái lân cận**:
+   - Trong mỗi bước, tạo một trạng thái lân cận bằng cách di chuyển ô trống theo một trong các hướng hợp lệ (lên, xuống, trái, phải).
+   - Chọn ngẫu nhiên một trong các trạng thái lân cận để đánh giá.
+
+4. **Chấp nhận/từ chối trạng thái mới**:
+   - Nếu heuristic của trạng thái mới tốt hơn (nhỏ hơn), luôn chấp nhận.
+   - Nếu tệ hơn, chấp nhận với xác suất P = e^(-(h_new - h_current)/T).
+
+5. **Các cải tiến đặc biệt trong triển khai hiện tại**:
+   - Lưu trữ trạng thái tốt nhất đã thấy (best_node) để trả về nếu không tìm được giải pháp tối ưu.
+   - Sử dụng lịch trình làm mát động, với làm mát chậm ở đầu và nhanh hơn về sau.
+   - Định kỳ "làm nóng lại" hệ thống để thoát khỏi cực tiểu cục bộ khi không có tiến bộ.
+   - Sử dụng khái niệm "plateau moves" để thoát khỏi vùng bằng phẳng trong không gian tìm kiếm.
+
+6. **Ưu điểm khi áp dụng cho 8-puzzle**:
+   - Có thể thoát khỏi các cực tiểu cục bộ mà các thuật toán tham lam như Hill Climbing mắc phải.
+   - Tiêu tốn ít bộ nhớ hơn so với các thuật toán tìm kiếm đầy đủ như A*.
+   - Có thể cung cấp giải pháp gần tối ưu trong thời gian hợp lý, ngay cả với các bài toán có không gian trạng thái lớn.
+
+7. **Nhược điểm**:
+   - Không đảm bảo tìm ra giải pháp tối ưu.
+   - Hiệu suất phụ thuộc nhiều vào tham số (nhiệt độ ban đầu, tốc độ làm mát).
+   - Có thể mất nhiều thời gian để hội tụ nếu các tham số không được điều chỉnh phù hợp.
+
+## VI. MÃ GIẢ THUẬT TOÁN SIMULATED ANNEALING CHO BÀI TOÁN 8-PUZZLE
+
+```
+function SIMULATED-ANNEALING(puzzle, heuristic, T0, cooling_rate, min_T, max_iterations):
+    if not puzzle.is_solvable() then return null
+    
+    current_state ← puzzle.initial_state
+    current_h ← heuristic(current_state, puzzle.goal_state)
+    best_state ← current_state
+    best_h ← current_h
+    
+    T ← T0
+    iterations ← 0
+    plateau_moves ← 0
+    
+    while T > min_T and iterations < max_iterations:
+        if puzzle.is_goal(current_state) then
+            return current_state
+            
+        # Tạo trạng thái lân cận
+        neighbor ← random_neighbor(current_state)
+        neighbor_h ← heuristic(neighbor, puzzle.goal_state)
+        
+        # Tính delta E
+        ΔE ← neighbor_h - current_h
+        
+        # Quyết định chấp nhận trạng thái mới
+        if ΔE < 0 then  # Trạng thái mới tốt hơn
+            current_state ← neighbor
+            current_h ← neighbor_h
+            plateau_moves ← 0
+            
+            # Cập nhật trạng thái tốt nhất
+            if current_h < best_h then
+                best_state ← current_state
+                best_h ← current_h
+        else:
+            # Chấp nhận với xác suất e^(-ΔE/T)
+            if random(0,1) < e^(-ΔE/T) then
+                current_state ← neighbor
+                current_h ← neighbor_h
+                plateau_moves ← plateau_moves + 1
+            else:
+                plateau_moves ← plateau_moves + 1
+        
+        # Xử lý plateau move
+        if plateau_moves > threshold then
+            # Thực hiện một bước di chuyển ngẫu nhiên
+            current_state ← random_neighbor(current_state)
+            current_h ← heuristic(current_state, puzzle.goal_state)
+            plateau_moves ← 0
+        
+        # Làm mát nhiệt độ (lịch trình thích ứng)
+        if iterations < max_iterations/3 then
+            T ← T * cooling_rate  # Làm mát chậm
+        else:
+            T ← T * (cooling_rate^2)  # Làm mát nhanh
+            
+        iterations ← iterations + 1
+        
+        # Định kỳ làm nóng lại
+        if iterations % 100 = 0 and no_improvement then
+            T ← min(T * 1.5, T0/2)
+    
+    # Nếu không tìm thấy đích, trả về trạng thái tốt nhất
+    return best_state
+```
+
+## VII. KẾT LUẬN
+
+Simulated Annealing là một thuật toán tối ưu hóa mạnh mẽ lấy cảm hứng từ quá trình vật lý. Khi áp dụng cho bài toán 8-puzzle, thuật toán cho phép thoát khỏi các cực tiểu cục bộ thông qua việc chấp nhận các bước đi tệ hơn với một xác suất nhất định, dựa trên nhiệt độ hiện tại.
+
+Hiệu suất của thuật toán phụ thuộc nhiều vào các tham số như nhiệt độ ban đầu, tốc độ làm mát và hàm đánh giá. Với những điều chỉnh phù hợp, SA có thể cung cấp giải pháp tốt cho bài toán 8-puzzle trong thời gian hợp lý, đặc biệt là đối với các trường hợp phức tạp mà các thuật toán tìm kiếm đầy đủ như A* có thể gặp khó khăn về bộ nhớ.

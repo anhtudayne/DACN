@@ -1,0 +1,16 @@
+Thuật toán: And-Or Graph Search
+Thời gian thực thi: 0.145 giây
+Số bước: 1
+Số nodes đã thăm: 12789
+
+Đường đi:
+
+Bước 0:
+[1, 2, 3]
+[4, 5, 6]
+[7, 0, 8]
+
+Bước 1:
+[1, 2, 3]
+[4, 5, 6]
+[7, 8, 0]
