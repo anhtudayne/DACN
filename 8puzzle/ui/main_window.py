@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
 import time
 import os
+import threading
 from datetime import datetime
 from ui.puzzle_board import PuzzleBoard
 from ui.interactive_puzzle_board import InteractivePuzzleBoard
@@ -24,6 +25,7 @@ from algorithms.simulated_annealing import simulated_annealing
 from algorithms.stochastic_hill_climbing import stochastic_hill_climbing
 from algorithms.genetic_algorithm import genetic_algorithm
 from algorithms.csp_backtracking import show_backtracking_visualization
+from algorithms.q_learning import QLearning, show_qlearning_visualization
 
 class MainWindow:
     def __init__(self, root):
@@ -81,7 +83,8 @@ class MainWindow:
             "GA": {"time": 0, "steps": 0, "nodes": 0, "runs": 0},
             "ANDOR": {"time": 0, "steps": 0, "nodes": 0, "runs": 0},
             "SENSORLESS": {"time": 0, "steps": 0, "nodes": 0, "runs": 0},
-            "CSP_BACKTRACKING": {"time": 0, "steps": 0, "nodes": 0, "runs": 0}
+            "CSP_BACKTRACKING": {"time": 0, "steps": 0, "nodes": 0, "runs": 0},
+            "Q_LEARNING": {"time": 0, "steps": 0, "nodes": 0, "runs": 0}
         }
         
         # AND-OR Search window được tạo mới mỗi khi gọi hàm show_and_or_search
@@ -112,8 +115,9 @@ class MainWindow:
         
         # Style cho radio buttons
         style.configure('Algorithm.TRadiobutton',
-                       font=('Arial', 10),
-                       background='#ffffff')
+                        font=('Arial', 9),  
+                        background='#ffffff',
+                        padding=2)  
                        
         # Style cho labels
         style.configure('Header.TLabel',
@@ -182,9 +186,9 @@ class MainWindow:
         # Frame cho algorithms
         algo_frame = ttk.LabelFrame(left_frame,
                                   text="Select Algorithm",
-                                  padding="10",
+                                  padding="5",  # Giảm padding
                                   style='Control.TLabelframe')
-        algo_frame.pack(fill="x", pady=(0, 15))
+        algo_frame.pack(fill="x", pady=(0, 10), ipady=0)  # Giảm khoảng cách dọc
         
         # Radio buttons cho các thuật toán
         self.algorithm_var = tk.StringVar(value="BFS")
@@ -220,7 +224,14 @@ class MainWindow:
         ]
         
         csp_algorithms = [
-            ("Backtracking", "CSP_BACKTRACKING")
+            ("Backtracking", "CSP_BACKTRACKING"),
+            ("AC-3 Search", "CSP_AC3"),
+            ("Min-Conflicts Search", "MIN_CONFLICTS")
+        ]
+        
+        # Thêm nhóm thuật toán học tăng cường
+        rl_algorithms = [
+            ("Q-Learning", "Q_LEARNING")
         ]
         
         # Tạo notebook với các tab cho từng nhóm thuật toán
@@ -247,6 +258,10 @@ class MainWindow:
         csp_frame = ttk.Frame(notebook, padding=5)
         notebook.add(csp_frame, text="CSP")
         
+        # Tab 6: Reinforcement Learning
+        rl_frame = ttk.Frame(notebook, padding=5)
+        notebook.add(rl_frame, text="Học tăng cường")
+        
         # Thêm các radio button vào tab Uninformed
         for i, (text, value) in enumerate(uninformed_algorithms):
             ttk.Radiobutton(
@@ -255,7 +270,7 @@ class MainWindow:
                 value=value,
                 variable=self.algorithm_var,
                 style='Algorithm.TRadiobutton'
-            ).pack(anchor="w", pady=2)
+            ).pack(anchor="w", pady=1)  # Giảm khoảng cách giữa các nút
         
         # Thêm các radio button vào tab Informed
         for i, (text, value) in enumerate(informed_algorithms):
@@ -265,7 +280,7 @@ class MainWindow:
                 value=value,
                 variable=self.algorithm_var,
                 style='Algorithm.TRadiobutton'
-            ).pack(anchor="w", pady=2)
+            ).pack(anchor="w", pady=1)
         
         # Thêm các radio button vào tab Local
         for i, (text, value) in enumerate(local_algorithms):
@@ -275,7 +290,7 @@ class MainWindow:
                 value=value,
                 variable=self.algorithm_var,
                 style='Algorithm.TRadiobutton'
-            ).pack(anchor="w", pady=2)
+            ).pack(anchor="w", pady=1)
         
         # Thêm các radio button vào tab Specialized
         for i, (text, value) in enumerate(special_algorithms):
@@ -285,7 +300,7 @@ class MainWindow:
                 value=value,
                 variable=self.algorithm_var,
                 style='Algorithm.TRadiobutton'
-            ).pack(pady=5, padx=5, anchor=tk.W)
+            ).pack(pady=1, padx=2, anchor=tk.W)
             
         # Thêm các radio button vào tab CSP
         for i, (text, value) in enumerate(csp_algorithms):
@@ -295,7 +310,17 @@ class MainWindow:
                 value=value,
                 variable=self.algorithm_var,
                 style='Algorithm.TRadiobutton'
-            ).pack(pady=5, padx=5, anchor=tk.W)
+            ).pack(pady=1, padx=2, anchor=tk.W)
+            
+        # Thêm các radio button vào tab Học tăng cường
+        for i, (text, value) in enumerate(rl_algorithms):
+            ttk.Radiobutton(
+                rl_frame,
+                text=text,
+                value=value,
+                variable=self.algorithm_var,
+                style='Algorithm.TRadiobutton'
+            ).pack(pady=1, padx=2, anchor=tk.W)
         
         # Frame cho controls
         control_frame = ttk.Frame(left_frame, style='Control.TFrame')
@@ -367,7 +392,7 @@ class MainWindow:
         solution_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
         
         # Tăng kích thước tối thiểu cho solution_frame
-        solution_frame.configure(height=400, width=300)  # Tăng chiều cao tối thiểu
+        solution_frame.configure(height=430, width=350)  # Tăng chiều cao và rộng
         solution_frame.pack_propagate(False)  # Ngăn frame tự co lại
         
         # Style cho khung info trong solution visualization
@@ -376,11 +401,11 @@ class MainWindow:
         
         # Tạo frame chứa puzzle board
         puzzle_container = ttk.Frame(solution_frame, style='Main.TFrame')
-        puzzle_container.pack(expand=True, fill=tk.BOTH, padx=10, pady=(5, 20))
+        puzzle_container.pack(expand=True, fill=tk.BOTH, padx=5, pady=(5, 10))
         
         # Tạo puzzle board trong container
-        self.puzzle_board = PuzzleBoard(puzzle_container)
-        self.puzzle_board.pack(expand=True, fill=tk.BOTH)
+        self.puzzle_board = PuzzleBoard(puzzle_container, cell_size=65)  # Giảm kích thước các ô puzzle
+        self.puzzle_board.pack(expand=True, fill=tk.BOTH, anchor='center')
         
         # Tạo frame hiển thị text file bên phải
         self.solution_text_frame = ttk.LabelFrame(solution_container, text="Solution Details", style='Control.TLabelframe', padding=15)
@@ -434,7 +459,7 @@ class MainWindow:
         
         # Tạo labels cho thống kê
         self.stats_labels = {}
-        for algo in ["BFS", "DFS", "IDS", "UCS", "GREEDY", "ASTAR", "IDA", "SHC", "SAHC", "BEAM", "SA", "STOCH", "GA", "ANDOR"]:
+        for algo in ["BFS", "DFS", "IDS", "UCS", "GREEDY", "ASTAR", "IDA", "SHC", "SAHC", "BEAM", "SA", "STOCH", "GA", "ANDOR", "SENSORLESS", "CSP_BACKTRACKING", "CSP_AC3", "MIN_CONFLICTS"]:
             # Frame cho mỗi thuật toán
             algo_frame = ttk.LabelFrame(
                 right_frame,
@@ -495,8 +520,10 @@ class MainWindow:
             "GA": "Genetic Algorithm",
             "ANDOR": "AND-OR Search",
             "SENSORLESS": "Sensorless Search (No Observation)",
-            "FU_BFS": "Fully Unobservable Search (2-Belief BFS)",
-            "PO_BFS": "Partially Observable Search (Fixed Cell)"
+            "CSP_BACKTRACKING": "Backtracking",
+            "CSP_AC3": "AC-3 Search",
+            "MIN_CONFLICTS": "Min-Conflicts Search",
+            "Q_LEARNING": "Q-Learning (Học tăng cường)"
         }
         return names.get(algo, algo)
         
@@ -563,7 +590,7 @@ class MainWindow:
             messagebox.showerror("Lỗi", "Vui lòng thiết lập trạng thái ban đầu và trạng thái đích!")
             return
             
-        # Nếu chọn AND-OR Search, Sensorless Search, Partial Observation Search hoặc CSP Backtracking, mở cửa sổ riêng thay vì chạy thuật toán ở giao diện chính
+        # Nếu chọn các thuật toán đặc biệt, mở cửa sổ riêng thay vì chạy thuật toán ở giao diện chính
         selected_algorithm = self.algorithm_var.get()
         if selected_algorithm == "ANDOR":
             self.show_and_or_search()
@@ -575,7 +602,20 @@ class MainWindow:
             self.show_partial_observation_search()
             return
         elif selected_algorithm == "CSP_BACKTRACKING":
+            # Gọi hàm mà không truyền tham số vì hàm này không nhận tham số
             show_backtracking_visualization()
+            return
+        elif selected_algorithm == "CSP_AC3":
+            # Thêm xử lý cho thuật toán AC-3
+            from algorithms.csp_ac3 import show_ac3_visualization
+            show_ac3_visualization()
+            return
+        elif selected_algorithm == "MIN_CONFLICTS":
+            from algorithms.csp_min_conflicts import show_min_conflicts_visualization
+            show_min_conflicts_visualization()
+            return
+        elif selected_algorithm == "Q_LEARNING":
+            self.show_q_learning(initial_state, goal_state)
             return
         
         # Bắt đầu theo dõi thời gian
@@ -749,9 +789,21 @@ class MainWindow:
         """Hiển thị cửa sổ tìm kiếm Partial Observation (Quan sát một phần)."""
         from ui.partial_observation_search_window import PartialObservationSearchWindow
         PartialObservationSearchWindow(self.root)
-    
-
         
+    def show_q_learning(self, initial_state, goal_state):
+        """Hiển thị cửa sổ Q-learning với tiến trình huấn luyện tích hợp."""
+        # Các tham số huấn luyện mặc định
+        learning_params = {
+            "alpha": 0.1,  # Learning rate
+            "gamma": 0.9,  # Discount factor
+            "epsilon": 0.3,  # Exploration rate
+            "episodes": 1000,  # Số lượt huấn luyện
+            "shuffle_steps": 20  # Số bước trộn cho mỗi trạng thái ban đầu mới
+        }
+        
+        # Hiển thị cửa sổ trực quan hóa Q-learning với tiến trình huấn luyện tích hợp
+        show_qlearning_visualization(initial_state, goal_state, learning_params)
+
     def show_solution(self):
         """Hiển thị từng bước của giải pháp"""
         try:

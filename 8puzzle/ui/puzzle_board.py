@@ -5,9 +5,9 @@ import tkinter as tk
 from tkinter import ttk
 
 class PuzzleBoard(ttk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, cell_size=80):
         super().__init__(parent)
-        self.cell_size = 80
+        self.cell_size = cell_size
         self.cells = []
         self.create_board()
         
