@@ -6,7 +6,7 @@
 **8-Puzzle Solver**: Ứng dụng giải bài toán 8-puzzle với nhiều thuật toán khác nhau
 
 ### 1.2. Tổng quan
-![Demo](./images/tongquananh.png)
+![Tổng quan](images/tongquananh.png)
 Bài toán 8-puzzle là một trong những bài toán kinh điển trong lĩnh vực trí tuệ nhân tạo, đặc biệt là trong lĩnh vực tìm kiếm. Bài toán bao gồm một bảng trò chơi 3x3 với 8 ô số và 1 ô trống. Mục tiêu của bài toán là di chuyển các ô số để đạt được trạng thái đích từ trạng thái ban đầu.
 
 Ứng dụng 8-Puzzle Solver này cung cấp một giao diện đồ họa người dùng (GUI) trực quan được xây dựng bằng Tkinter, cho phép người dùng thiết lập trạng thái ban đầu và trạng thái đích, chọn thuật toán tìm kiếm mong muốn, và theo dõi quá trình giải bài toán theo từng bước.
