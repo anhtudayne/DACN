@@ -1,4 +1,12 @@
-# 8-Puzzle Solver
+# BÁO CÁO ĐỒ ÁN CÁ NHÂN MÔN TRÍ TUỆ NHÂN TẠO
+
+**Họ và tên:** Vo Van Tu
+
+**Mã số sinh viên:** 23110359
+
+**Lớp :** ARIN330585 (CHIỀU THỨ 5)
+
+# 8-PUZZLE SOLVER
 
 ## 1. Giới thiệu
 
@@ -434,9 +442,10 @@ Các thuật toán như Hill Climbing dễ bị mắc kẹt ở cực tiểu c�
 **Phù hợp với các không gian trạng thái lớn:**
 Các thuật toán tìm kiếm cục bộ đặc biệt phù hợp với các bài toán có không gian trạng thái lớn, nơi các thuật toán tìm kiếm đầy đủ không thể áp dụng được do hạn chế về bộ nhớ và thời gian. Trong bài toán 8-puzzle, chúng có thể không phải là lựa chọn tốt nhất do không gian trạng thái tương đối nhỏ và các thuật toán như A* thường hiệu quả hơn.
 
-### 2.5. Các thuật toán tìm kiếm đặc biệt
+### 2.5. Các thuật toán tìm kiếm trong môi trường phức tạp
 
 #### AND-OR Search
+![ANDOR](images/andor.gif)
 
 **Cách tiếp cận:**
 
@@ -444,7 +453,6 @@ AND-OR Search là một thuật toán tìm kiếm được thiết kế để gi
 - Các nút OR đại diện cho các trạng thái, với các nhánh là các hành động có thể thực hiện.
 - Các nút AND đại diện cho các tập hợp trạng thái có thể xảy ra sau một hành động, với các nhánh là các trạng thái có thể.
 
-Trong bối cảnh 8-puzzle, AND-OR Search ít được sử dụng hơn vì đây là một môi trường xác định (mỗi hành động dẫn đến một trạng thái duy nhất).
 
 **Khi nào sử dụng:**
 - Khi kết quả của các hành động không chắc chắn
@@ -453,22 +461,22 @@ Trong bối cảnh 8-puzzle, AND-OR Search ít được sử dụng hơn vì đ�
 
 #### Tìm kiếm với thông tin không đầy đủ
 
-**1. Sensorless Search (Tìm kiếm không quan sát)**
+**1. Search with no observation (Tìm kiếm không quan sát)**
 
-Sensorless Search giải quyết các bài toán trong đó trạng thái hiện tại không được biết chính xác, nhưng thuộc một tập hợp các trạng thái có thể.
-
+Search with no observation giải quyết các bài toán trong đó trạng thái hiện tại không được biết chính xác, nhưng thuộc một tập hợp các trạng thái có thể.
 Trong bài toán 8-puzzle, điều này tương đương với việc không biết chính xác cấu hình hiện tại của bảng, nhưng biết nó thuộc một tập hợp các cấu hình có thể. Mục tiêu là tìm một chuỗi hành động đưa tất cả các cấu hình có thể đến trạng thái đích.
+![NOOBSERVATION](images/no.gif)
 
 *Cách tiếp cận:*
 - Làm việc với tập hợp các trạng thái thay vì một trạng thái đơn lẻ
-- Tìm chuỗi hành động giảm dần kích thước của tập hợp trạng thái có thể
+- Tìm chuỗi hành động tối ưu của tập hợp trạng thái có thể
 - Cuối cùng đưa tất cả các trạng thái có thể đến trạng thái đích
 
 **2. Partial Observation Search (Tìm kiếm quan sát một phần)**
 
 Partial Observation Search giải quyết các bài toán trong đó chỉ có thể quan sát một phần của trạng thái, hoặc có thể thực hiện các hành động cảm biến để thu thập thêm thông tin.
-
 Trong bài toán 8-puzzle, điều này có thể tương đương với việc chỉ nhìn thấy một phần của bảng (ví dụ: chỉ nhìn thấy một số ô), và có thể thực hiện các hành động để thu thập thêm thông tin về các ô khác.
+![PARTIAL](images/partial.gif)
 
 *Cách tiếp cận:*
 - Sử dụng các hành động cảm biến để thu thập thông tin
@@ -489,8 +497,8 @@ Bài toán 8-puzzle có thể được mô hình hóa như một bài toán th�
 - Miền giá trị của mỗi biến là tập hợp {0, 1, 2, 3, 4, 5, 6, 7, 8}
 
 **Ràng buộc:**
-- Mỗi giá trị từ 0 đến 8 phải xuất hiện đúng một lần trên bảng (ràng buộc alldiff)
-- Các hành động hợp lệ chỉ cho phép ô trống di chuyển lên, xuống, trái, phải (ràng buộc kế cận)
+- Mỗi giá trị từ 0 đến 8 phải xuất hiện đúng một lần trên bảng
+- Các hành động hợp lệ chỉ cho phép ô trống di chuyển lên, xuống, trái, phải
 - Trạng thái cuối cùng phải khớp với trạng thái đích
 
 Tuy nhiên, cần lưu ý rằng CSP thường được sử dụng để tìm một trạng thái thỏa mãn các ràng buộc, không phải để tìm một chuỗi hành động. Do đó, khi áp dụng CSP cho 8-puzzle, chúng ta thường tìm kiếm một chuỗi các CSP, mỗi CSP đại diện cho một bước trong giải pháp.
@@ -500,6 +508,7 @@ Tuy nhiên, cần lưu ý rằng CSP thường được sử dụng để tìm m
 **1. Backtracking**
 
 Backtracking là thuật toán cơ bản nhất cho CSP, thử gán giá trị cho các biến theo thứ tự và quay lui khi gặp xung đột.
+![BACKTRACKING](images/back.gif)
 
 *Cách tiếp cận:*
 - Chọn một biến chưa được gán giá trị
@@ -518,6 +527,7 @@ Backtracking là thuật toán cơ bản nhất cho CSP, thử gán giá trị c
 **2. AC-3 Search (Arc Consistency Algorithm #3)**
 
 AC-3 là một thuật toán tiền xử lý để loại bỏ các giá trị không phù hợp từ miền của các biến, đảm bảo tính nhất quán cung (arc consistency).
+![AC3](images/ac3.gif)
 
 *Cách tiếp cận:*
 - Duy trì một hàng đợi các cặp biến có ràng buộc với nhau
@@ -535,6 +545,7 @@ AC-3 là một thuật toán tiền xử lý để loại bỏ các giá trị k
 **3. Min-Conflicts Search**
 
 Min-Conflicts là một thuật toán tìm kiếm cục bộ cho CSP, bắt đầu từ một trạng thái đầy đủ (có thể không thỏa mãn tất cả các ràng buộc) và cố gắng giảm số lượng xung đột.
+![MINCONFLICTS](images/min.gif)
 
 *Cách tiếp cận:*
 - Bắt đầu với một trạng thái đầy đủ (gán giá trị cho tất cả các biến)
@@ -555,7 +566,7 @@ Min-Conflicts là một thuật toán tìm kiếm cục bộ cho CSP, bắt đ�
 
 Q-Learning là một thuật toán học tăng cường không cần mô hình, học cách đưa ra quyết định tối ưu thông qua tương tác với môi trường.
 
-**Mô hình Markov Decision Process (MDP):**
+![QLEARNING](images/q.gif)
 
 Bài toán 8-puzzle có thể được mô hình hóa như một MDP:
 - Trạng thái (S): Các cấu hình có thể có của bảng 8-puzzle
@@ -631,6 +642,7 @@ So với các thuật toán tìm kiếm cổ điển:
 - Hill Climbing: Nhanh nhưng dễ bị mắc kẹt ở cực tiểu cục bộ
 
 Ưu điểm chính của Q-Learning là khả năng học từ kinh nghiệm và cải thiện hiệu suất theo thời gian, đặc biệt hữu ích khi cần giải quyết nhiều lần các bài toán tương tự.
+
 ## 3. Hướng dẫn sử dụng
 
 ### Cài đặt
@@ -642,12 +654,11 @@ So với các thuật toán tìm kiếm cổ điển:
 **Thư viện phụ thuộc:**
 - tkinter: Thư viện GUI mặc định của Python
 - numpy: Thư viện hỗ trợ xử lý mảng và ma trận
-- pillow (PIL): Thư viện xử lý hình ảnh (nếu có sử dụng hình ảnh)
 
 **Các bước cài đặt:**
 1. Clone hoặc tải xuống mã nguồn từ repository:
    ```
-   git clone https://github.com/yourusername/8puzzle-solver.git
+   git clone 
    ```
 
 2. Cài đặt các thư viện phụ thuộc:
@@ -665,8 +676,8 @@ So với các thuật toán tìm kiếm cổ điển:
 **Thiết lập trạng thái ban đầu và trạng thái đích:**
 1. Khi khởi động ứng dụng, bạn sẽ thấy ba bảng puzzle: trạng thái ban đầu (bên trái), trạng thái đích (bên phải), và bảng visualization (ở giữa).
 2. Để thiết lập trạng thái ban đầu hoặc đích, bạn có thể:
-   - Nhấp vào các ô số và kéo chúng đến vị trí mong muốn
-   - Sử dụng nút "Random" để tạo trạng thái ngẫu nhiên
+   - Nhấp vào các ô số và nhập từ bàn phím
+   - Sử dụng nút "Dữ liệu mẫu" để tạo trạng thái ngẫu nhiên
    - Sử dụng nút "Reset" để đặt lại về trạng thái mặc định
 
 **Chọn và chạy thuật toán:**
@@ -681,7 +692,6 @@ So với các thuật toán tìm kiếm cổ điển:
    - Thời gian giải
    - Số bước trong giải pháp
    - Số nút đã khám phá
-3. Bạn có thể lưu kết quả bằng cách nhấp vào nút "Save Solution"
 
 ### Ví dụ minh họa
 
@@ -704,16 +714,16 @@ So với các thuật toán tìm kiếm cổ điển:
 3. Sau khi huấn luyện, nhấp "Solve Puzzle" để xem agent giải bài toán
 4. Theo dõi quá trình giải và phân tích kết quả
 
-## 5. Kết luận
+## 4. Kết luận
 
 ### Kết quả đạt được
 
 **Tổng kết các kết quả chính:**
 1. Đã xây dựng thành công một ứng dụng toàn diện để giải bài toán 8-puzzle với nhiều thuật toán khác nhau
-2. Triển khai thành công 20+ thuật toán tìm kiếm từ các nhóm khác nhau: không thông tin, có thông tin, cục bộ, CSP, và học tăng cường
+2. Triển khai thành công 20+ thuật toán tìm kiếm từ các nhóm khác nhau: không thông tin, có thông tin, cục bộ, CSP,tìm kiếm trong môi trường phức tạp và học tăng cường
 3. Tạo giao diện người dùng trực quan, cho phép dễ dàng thiết lập bài toán và theo dõi quá trình giải
 4. Cung cấp công cụ so sánh hiệu suất giữa các thuật toán
-
+5. Khả năng lưu file đường đi đến đích một cácht tự động
 **Các phát hiện quan trọng về hiệu suất thuật toán:**
 1. Thuật toán A* với heuristic Manhattan Distance thường là lựa chọn tốt nhất về mặt cân bằng giữa thời gian và tối ưu
 2. IDA* là lựa chọn tốt khi bộ nhớ hạn chế
@@ -727,11 +737,6 @@ So với các thuật toán tìm kiếm cổ điển:
 2. Tối ưu hóa hiệu suất của các thuật toán tìm kiếm cho không gian trạng thái lớn
 3. Thiết kế hệ thống phần thưởng hiệu quả cho Q-Learning
 4. Xây dựng giao diện người dùng trực quan và thân thiện
-
-**Giới hạn của dự án:**
-1. Một số thuật toán (như Genetic Algorithm) có thể mất nhiều thời gian để hội tụ đến giải pháp tối ưu
-2. Khả năng mở rộng cho các bài toán lớn hơn (như 15-puzzle) bị hạn chế do độ phức tạp tính toán
-3. Hiện tại chưa hỗ trợ tùy chỉnh các tham số thuật toán trong giao diện người dùng
 
 ### Hướng phát triển tương lai
 
