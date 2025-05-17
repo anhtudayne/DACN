@@ -150,7 +150,7 @@ Mặc dù không gian trạng thái tương đối lớn, bài toán 8-puzzle th
 **1. Breadth-First Search (BFS)**
 
 BFS khám phá không gian trạng thái theo chiều rộng, mở rộng tất cả các nút ở độ sâu hiện tại trước khi đi sâu hơn.
-![BFS](images/BFS.gif)
+![BFS](images/bfs.gif)
 *Ưu điểm:*
 - Luôn tìm được đường đi ngắn nhất (tối ưu về số bước)
 - Đảm bảo tìm được giải pháp nếu có
