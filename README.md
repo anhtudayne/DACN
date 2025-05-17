@@ -151,6 +151,7 @@ Mặc dù không gian trạng thái tương đối lớn, bài toán 8-puzzle th
 
 BFS khám phá không gian trạng thái theo chiều rộng, mở rộng tất cả các nút ở độ sâu hiện tại trước khi đi sâu hơn.
 ![BFS](images/BFS.gif)
+
 *Ưu điểm:*
 - Luôn tìm được đường đi ngắn nhất (tối ưu về số bước)
 - Đảm bảo tìm được giải pháp nếu có
@@ -163,6 +164,7 @@ BFS khám phá không gian trạng thái theo chiều rộng, mở rộng tất 
 
 DFS khám phá không gian trạng thái theo chiều sâu, đi sâu nhất có thể trước khi quay lui.
 ![DFS](images/dfs.gif)
+
 *Ưu điểm:*
 - Tiêu tốn ít bộ nhớ hơn BFS
 - Có thể tìm được giải pháp nhanh hơn nếu giải pháp nằm sâu trong không gian tìm kiếm
@@ -175,6 +177,7 @@ DFS khám phá không gian trạng thái theo chiều sâu, đi sâu nhất có 
 
 IDS kết hợp ưu điểm của BFS và DFS bằng cách thực hiện DFS với độ sâu giới hạn, sau đó tăng dần giới hạn độ sâu.
 ![IDS](images/ids.gif)
+
 *Ưu điểm:*
 - Đảm bảo tìm được đường đi ngắn nhất
 - Tiêu tốn ít bộ nhớ hơn BFS
@@ -187,6 +190,7 @@ IDS kết hợp ưu điểm của BFS và DFS bằng cách thực hiện DFS v�
 
 UCS mở rộng nút có chi phí tích lũy nhỏ nhất, trong trường hợp 8-puzzle, chi phí là số bước di chuyển.
 ![UCS](images/ucs.gif)
+
 *Ưu điểm:*
 - Tối ưu khi chi phí đường đi là mục tiêu
 - Đảm bảo tìm được đường đi có chi phí thấp nhất
@@ -283,6 +287,7 @@ def linear_conflict(state, goal_state):
 
 Greedy Search luôn mở rộng nút có giá trị heuristic thấp nhất, không quan tâm đến chi phí đã đi.
 ![GREEDY](images/greedy.gif)
+
 *Ưu điểm:*
 - Nhanh và hiệu quả về mặt tính toán
 - Tiêu tốn ít bộ nhớ hơn so với A*
@@ -295,6 +300,7 @@ Greedy Search luôn mở rộng nút có giá trị heuristic thấp nhất, kh�
 
 A* kết hợp chi phí đã đi (g) và ước tính chi phí còn lại (h) để chọn nút mở rộng tiếp theo.
 ![A*](images/asao.gif)
+
 *Ưu điểm:*
 - Đảm bảo tìm được đường đi ngắn nhất nếu hàm heuristic không vượt quá chi phí thực
 - Hiệu quả hơn BFS và UCS khi hàm heuristic tốt
@@ -307,6 +313,7 @@ A* kết hợp chi phí đã đi (g) và ước tính chi phí còn lại (h) đ
 
 IDA* kết hợp ý tưởng của IDS và A*, thực hiện tìm kiếm sâu với giới hạn dựa trên giá trị f = g + h.
 ![IDA*](images/ida.gif)
+
 *Ưu điểm:*
 - Tiêu tốn ít bộ nhớ hơn A*
 - Vẫn đảm bảo tìm được đường đi ngắn nhất
@@ -337,6 +344,7 @@ Các thuật toán tìm kiếm cục bộ tập trung vào việc cải thiện 
 
 Hill Climbing đơn giản chọn trạng thái kế tiếp có giá trị heuristic tốt hơn trạng thái hiện tại.
 ![HILLCLIMBING](images/simple.gif)
+
 *Ưu điểm:*
 - Đơn giản và dễ triển khai
 - Tiêu tốn ít bộ nhớ
@@ -350,6 +358,7 @@ Hill Climbing đơn giản chọn trạng thái kế tiếp có giá trị heuri
 
 Phiên bản cải tiến của Hill Climbing, xem xét tất cả các trạng thái kế tiếp và chọn trạng thái tốt nhất.
 ![HILLCLIMBING](images/steepest.gif)
+
 *Ưu điểm:*
 - Ít khả năng bị mắc kẹt hơn so với Simple Hill Climbing
 - Vẫn tiêu tốn ít bộ nhớ
@@ -362,6 +371,7 @@ Phiên bản cải tiến của Hill Climbing, xem xét tất cả các trạng 
 
 Phiên bản ngẫu nhiên của Hill Climbing, chọn ngẫu nhiên một trong các trạng thái kế tiếp tốt hơn.
 ![HILLCLIMBING](images/stocha.gif)
+
 *Ưu điểm:*
 - Có khả năng thoát khỏi cực tiểu cục bộ tốt hơn
 - Đơn giản và tiêu tốn ít bộ nhớ
@@ -374,6 +384,7 @@ Phiên bản ngẫu nhiên của Hill Climbing, chọn ngẫu nhiên một trong
 
 Mô phỏng quá trình ủ kim loại, cho phép chấp nhận các trạng thái kém hơn với xác suất giảm dần theo thời gian.
 ![HILLCLIMBING](images/sa.gif)
+
 *Ưu điểm:*
 - Có khả năng thoát khỏi cực tiểu cục bộ tốt
 - Hội tụ đến giải pháp tốt trong nhiều trường hợp
@@ -387,6 +398,7 @@ Mô phỏng quá trình ủ kim loại, cho phép chấp nhận các trạng th�
 
 Duy trì một tập hợp các trạng thái tốt nhất (beam) và mở rộng tất cả chúng ở mỗi bước.
 ![HILLCLIMBING](images/beam.gif)
+
 *Ưu điểm:*
 - Khám phá nhiều đường đi cùng lúc
 - Ít khả năng bị mắc kẹt ở cực tiểu cục bộ hơn so với Hill Climbing
@@ -400,6 +412,7 @@ Duy trì một tập hợp các trạng thái tốt nhất (beam) và mở rộn
 
 Mô phỏng quá trình tiến hóa tự nhiên, sử dụng quần thể các giải pháp và áp dụng các toán tử di truyền như chọn lọc, lai ghép và đột biến.
 ![HILLCLIMBING](images/ga.gif)
+
 *Ưu điểm:*
 - Khả năng tìm kiếm toàn cục tốt
 - Có thể tìm được nhiều giải pháp khác nhau
