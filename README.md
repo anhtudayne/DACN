@@ -2,7 +2,7 @@
 
 **Họ và tên:** Võ Văn Tú
 
-**Mã số sinh viên:** ...
+**Mã số sinh viên:** 23110359
 
 **Lớp :** ARIN330585 (CHIỀU THỨ 5)
 
