@@ -1,8 +1,8 @@
 # BÁO CÁO ĐỒ ÁN CÁ NHÂN MÔN TRÍ TUỆ NHÂN TẠO
 
-**Họ và tên:** Vo Van Tu
+**Họ và tên:** Võ Văn Tú
 
-**Mã số sinh viên:** 23110359
+**Mã số sinh viên:** ...
 
 **Lớp :** ARIN330585 (CHIỀU THỨ 5)
 
@@ -754,3 +754,5 @@ So với các thuật toán tìm kiếm cổ điển:
 1. Tối ưu hóa cấu trúc dữ liệu và thuật toán để giảm thời gian tính toán
 2. Triển khai tính toán song song cho các thuật toán phù hợp
 3. Sử dụng các kỹ thuật cắt tỉa (pruning) nâng cao để giảm không gian tìm kiếm
+
+# CẢM ƠN MỌI NGƯỜI ĐÃ XEM 
