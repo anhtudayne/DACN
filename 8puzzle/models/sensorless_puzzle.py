@@ -1,16 +1,10 @@
 import copy
 
 class SensorlessPuzzle:
-    """
-    Lớp mô tả bài toán 8-puzzle trong môi trường không quan sát.
-    Thay vì một trạng thái duy nhất, chúng ta làm việc với belief states - 
-    tập hợp các trạng thái mà puzzle có thể đang ở.
-    """
+   
     
     def __init__(self):
-        """
-        Khởi tạo puzzle với initial belief state và goal states cố định.
-        """
+        
         # Initial belief state - 2 cấu hình đại diện cố định
         self.initial_belief_state = [
             # Cấu hình 1 - trạng thái gần với goal

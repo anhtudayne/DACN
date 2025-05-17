@@ -1,30 +1,3 @@
-"""
-Thuật toán Arc Consistency #3 (AC-3) cho bài toán 8-puzzle CSP
-
-Định nghĩa:
-    Thuật toán AC-3 (Arc Consistency Algorithm #3) là một thuật toán đạt được tính nhất quán cung (arc-consistency) 
-    trong các bài toán thoả mãn ràng buộc (Constraint Satisfaction Problems - CSP). Thuật toán giúp loại bỏ các 
-    giá trị không thỏa mãn ràng buộc khỏi domain của các biến trước khi thực hiện backtracking.
-
-Nguyên lý hoạt động:
-    1. Khởi tạo domain cho mỗi biến (mỗi ô trong bảng 3x3 là một biến)
-    2. Tạo ra hàng đợi Q chứa tất cả các cung (X_i, X_j) giữa các biến có ràng buộc
-    3. Lặp lại cho đến khi hàng đợi rỗng:
-       a. Lấy ra một cung (X_i, X_j) từ hàng đợi
-       b. Gọi hàm REVISE(X_i, X_j) để loại bỏ các giá trị không thỏa mãn ràng buộc từ domain của X_i
-       c. Nếu domain của X_i bị thay đổi, thêm các cung (X_k, X_i) vào hàng đợi
-    4. Sau khi hoàn thành AC-3, tiếp tục với thuật toán backtracking truyền thống
-
-Ưu điểm:
-    1. Giảm số lần backtracking: Thu hẹp domain trước nên giảm số lần phải quay lui
-    2. Phát hiện sớm các trường hợp không thể giải: Nếu domain trở thành rỗng, chứng tỏ bài toán không có lời giải
-    3. Tăng hiệu quả tổng thể: Kết hợp với các kỹ thuật chọn biến thông minh như MRV (Minimum Remaining Values)
-
-Kết hợp với Backtracking:
-    Thuật toán AC-3 thường được sử dụng như bước tiền xử lý trước khi thực hiện backtracking.
-    AC-3 loại bỏ các giá trị không phù hợp, sau đó thuật toán backtracking sẽ tìm lời giải trong không gian đã thu hẹp.
-"""
-
 import time
 import copy
 import random
@@ -36,15 +9,6 @@ class CSPARC3:
     """Giải thuật toán Arc Consistency #3 (AC-3) kết hợp Backtracking cho 8-puzzle"""
     
     def __init__(self, visualization_callback=None, status_callback=None, domain_callback=None, delay=0.5):
-        """
-        Khởi tạo thuật toán CSP AC-3
-        
-        Args:
-            visualization_callback: Hàm callback để hiển thị trạng thái puzzle
-            status_callback: Hàm callback để cập nhật trạng thái
-            domain_callback: Hàm callback để hiển thị domain
-            delay: Thời gian chờ giữa các bước (giây)
-        """
         self.visualization_callback = visualization_callback
         self.status_callback = status_callback
         self.domain_callback = domain_callback
@@ -104,16 +68,6 @@ class CSPARC3:
             self.domain_callback(self.domains)
 
     def revise(self, xi, xj):
-        """
-        Kiểm tra và cập nhật domain của Xi dựa trên ràng buộc với Xj
-        
-        Args:
-            xi: Vị trí (row, col) của biến Xi
-            xj: Vị trí (row, col) của biến Xj
-            
-        Returns:
-            bool: True nếu domain của Xi bị thay đổi, False nếu không
-        """
         revised = False
         
         # Tạo bản sao domain để duyệt
@@ -166,12 +120,6 @@ class CSPARC3:
         return revised
 
     def ac3(self):
-        """
-        Thuật toán AC-3 để đạt được arc consistency
-        
-        Returns:
-            bool: True nếu arc consistency đạt được, False nếu domain của bất kỳ biến nào trở thành rỗng
-        """
         if self.status_callback:
             self.status_callback("Bắt đầu thuật toán AC-3 để thu hẹp domain...")
         
@@ -230,15 +178,6 @@ class CSPARC3:
         return True  # Arc consistency đạt được
 
     def is_valid(self, assignment):
-        """
-        Kiểm tra xem assignment có hợp lệ không (mỗi giá trị 0-8 chỉ xuất hiện một lần)
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-        
-        Returns:
-            bool: True nếu assignment hợp lệ
-        """
         # Lấy danh sách các giá trị trong assignment
         values = list(assignment.values())
         
@@ -254,15 +193,6 @@ class CSPARC3:
         return True
 
     def is_complete(self, assignment):
-        """
-        Kiểm tra xem đã gán tất cả giá trị cho puzzle và thỏa mãn tất cả ràng buộc chưa
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-        
-        Returns:
-            bool: True nếu đã gán tất cả giá trị và thỏa mãn tất cả ràng buộc
-        """
         # Kiểm tra xem đã gán đầy đủ 9 vị trí chưa
         if len(assignment) != 9:  # 9 ô trên bảng 3x3
             return False
@@ -270,15 +200,6 @@ class CSPARC3:
         return True  # Nếu đã gán đủ 9 vị trí và thỏa mãn tất cả ràng buộc
     
     def select_unassigned_variable(self, assignment):
-        """
-        Chọn vị trí tiếp theo để gán giá trị dựa trên domain nhỏ nhất (MRV - Minimum Remaining Values)
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            tuple: Vị trí (row, col) tiếp theo để gán hoặc None nếu không có
-        """
         # Tìm các biến chưa được gán
         unassigned = []
         for row in range(3):
@@ -294,31 +215,14 @@ class CSPARC3:
         return min(unassigned, key=lambda var: len(self.domains[var]))
     
     def order_domain_values(self, var, assignment):
-        """
-        Trả về các giá trị từ domain của biến, đã được sắp xếp theo độ ràng buộc tăng dần
-        
-        Args:
-            var: Vị trí (row, col) cần gán giá trị
-            assignment: Dictionary hiện tại
-            
-        Returns:
-            list: Danh sách các giá trị từ domain, sắp xếp theo ràng buộc
-        """
+       
         # Tạo bản sao domain và chỉ lấy các giá trị trong domain hiện tại
         values = list(self.domains[var])
         random.shuffle(values)  # Trộn ngẫu nhiên để tránh trường hợp tệ nhất
         return values
     
     def backtrack(self, assignment):
-        """
-        Thuật toán backtracking để tìm trạng thái thỏa mãn ràng buộc
         
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            dict: Gán hoàn chỉnh thỏa mãn tất cả ràng buộc, hoặc None nếu không tìm thấy
-        """
         # Tăng số trạng thái đã khám phá
         self.states_explored += 1
         
@@ -371,15 +275,7 @@ class CSPARC3:
         return None
     
     def create_state_from_assignment(self, assignment):
-        """
-        Tạo trạng thái puzzle từ assignment
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            list: Trạng thái puzzle 2D
-        """
+       
         state = [[" " for _ in range(3)] for _ in range(3)]
         for (row, col), value in assignment.items():
             state[row][col] = value
@@ -387,31 +283,21 @@ class CSPARC3:
         return state
     
     def create_state_from_domains(self):
-        """
-        Tạo trạng thái hiển thị từ domain hiện tại
-        
-        Returns:
-            dict: Thông tin domain cho từng ô
-        """
+       
         state = {}
         for pos in self.domains:
             domain = self.domains[pos]
             if len(domain) == 1:
-                # Nếu domain chỉ có một giá trị, hiển thị giá trị đó
+                
                 state[pos] = list(domain)[0]
             else:
-                # Nếu domain có nhiều giá trị, hiển thị tất cả
+                
                 state[pos] = sorted(list(domain))
         
         return state
     
     def solve(self):
-        """
-        Giải bài toán CSP - Tìm trạng thái thỏa mãn ràng buộc sử dụng AC-3 kết hợp Backtracking
-        
-        Returns:
-            dict: Gán hoàn chỉnh thỏa mãn tất cả ràng buộc, hoặc None nếu không tìm thấy
-        """
+       
         # Khởi tạo lại các biến theo dõi
         self.backtracks = 0
         self.states_explored = 0

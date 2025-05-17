@@ -18,52 +18,7 @@ class Node:
         return isinstance(other, Node) and self.state == other.state
 
 def simulated_annealing(puzzle, heuristic_func=manhattan_distance, initial_temp=1000, cooling_rate=0.97, min_temp=0.01, max_iterations=10000):
-    """
-    Thuật toán Mô phỏng Luyện kim (Simulated Annealing) cho bài toán 8-puzzle.
-    
-    Định nghĩa:
-    - Là một thuật toán tối ưu ngẫu nhiên liên quan đến quá trình luyện kim trong vật lý học.
-    - Dựa trên việc mô phỏng quá trình đun nóng và làm mát kim loại để tối ưu hóa cấu trúc phân tử.
-    
-    Nguyên lý hoạt động:
-    - Bắt đầu với "nhiệt độ" cao, dần dần "làm mát" hệ thống để tìm lời giải tối ưu.
-    - Ở nhiệt độ cao: thuật toán cho phép chấp nhận các trạng thái xấu hơn với xác suất cao.
-    - Khi nhiệt độ giảm dần: xác suất chấp nhận các trạng thái xấu hơn cũng giảm theo.
-    - Nhiệt độ thấp: thuật toán hành xử giống như thuật toán leo đồi, chỉ chấp nhận các trạng thái tốt hơn.
-    
-    Các bước thực hiện:
-    1. Khởi tạo trạng thái ban đầu và nhiệt độ ban đầu cao.
-    2. Lặp lại cho đến khi nhiệt độ xuống dưới ngưỡng tối thiểu hoặc đạt số lần lặp tối đa:
-       a. Tạo trạng thái lân cận từ trạng thái hiện tại.
-       b. Tính toán sự thay đổi năng lượng (độ tốt) ΔE giữa trạng thái hiện tại và trạng thái mới.
-       c. Nếu ΔE < 0 (trạng thái mới tốt hơn), chấp nhận trạng thái mới.
-       d. Nếu ΔE > 0 (trạng thái mới xấu hơn), chấp nhận trạng thái mới với xác suất e^(-ΔE/T).
-       e. Giảm nhiệt độ theo lịch trình làm mát: T = T * cooling_rate.
-    3. Trả về trạng thái tốt nhất tìm được.
-    
-    Ưu điểm:
-    - Có khả năng thoát khỏi các cực trị địa phương tốt hơn thuật toán leo đồi.
-    - Không đòi hỏi phải biết trước không gian trạng thái.
-    - Cho phép tìm kiếm các trạng thái xấu hơn tạm thời để tìm được lời giải tốt hơn về sau.
-    - Có cơ sở lý thuyết vững chắc với xác suất hội tụ đến giải pháp tối ưu toàn cục khi điều chỉnh đúng các tham số.
-    
-    Nhược điểm:
-    - Thời gian chạy có thể khá lâu và khó đoán trước.
-    - Nhiều tham số cần điều chỉnh (nhiệt độ ban đầu, tốc độ làm mát, ngưỡng dừng) và hiệu suất phụ thuộc vào các giá trị này.
-    - Không đảm bảo tìm được lời giải tối ưu toàn cục trong thực tế với giới hạn về thời gian.
-    - Dễ bị ảnh hưởng bởi các giá trị ban đầu và hàm đánh giá heuristic.
-    
-    Tham số:
-    - puzzle: Đối tượng Puzzle
-    - heuristic_func: Hàm đánh giá trạng thái, mặc định là khoảng cách Manhattan
-    - initial_temp: Nhiệt độ ban đầu (càng cao càng cho phép nhiều bước ngẫu nhiên)
-    - cooling_rate: Tốc độ làm mát (làm mát chậm cho phép thời gian tìm kiếm lâu hơn)
-    - min_temp: Nhiệt độ tối thiểu để dừng thuật toán
-    - max_iterations: Số lần lặp tối đa
-    
-    Trả về:
-    - (đường đi từ trạng thái ban đầu đến đích, số nút đã khám phá) hoặc (None, số nút đã khám phá)
-    """
+   
     # Kiểm tra xem puzzle có thể giải được không
     if not puzzle.is_solvable():
         return None, 0

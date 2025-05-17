@@ -1,0 +1,16 @@
+Thuật toán: Stochastic Hill Climbing
+Thời gian thực thi: 0.001 giây
+Số bước: 1
+Số nodes đã thăm: 4
+
+Đường đi:
+
+Bước 0:
+[1, 2, 3]
+[4, 5, 6]
+[7, 0, 8]
+
+Bước 1:
+[1, 2, 3]
+[4, 5, 6]
+[7, 8, 0]

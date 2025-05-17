@@ -1,27 +1,3 @@
-'''=================================================================================
- THUẬT TOÁN Q-LEARNING CHO BÀI TOÁN 8-PUZZLE
-=================================================================================
-
-1. ĐỊNH NGHĨA:
-   Q-learning là thuật toán học tăng cường (reinforcement learning) không cần mô hình,
-   dùng để học chính sách tối ưu cho việc ra quyết định trong môi trường không chắc chắn.
-   
-2. NGUYÊN LÝ HOẠT ĐỘNG:
-   a. Xây dựng bảng Q-table lưu giá trị Q(s,a) cho mỗi cặp (trạng thái, hành động)
-   b. Agent tương tác với môi trường và cập nhật giá trị Q theo công thức:
-      Q(s,a) = Q(s,a) + α * [r + γ * max(Q(s',a')) - Q(s,a)]
-      Trong đó:
-      - α: Tốc độ học (learning rate)
-      - γ: Hệ số chiết khấu (discount factor)
-      - r: Phần thưởng nhận được
-      - s,a: Trạng thái và hành động hiện tại
-      - s': Trạng thái mới sau khi thực hiện hành động
-      
-3. ÁP DỤNG CHO 8-PUZZLE:
-   - Trạng thái: Cấu hình của bảng 8-puzzle
-   - Hành động: Di chuyển ô trống (lên, xuống, trái, phải)
-   - Phần thưởng: Dương khi đạt đến trạng thái đích, âm cho các bước di chuyển
-'''
 
 import numpy as np
 import random
@@ -36,15 +12,7 @@ class QLearning:
     """Thuật toán Q-learning cho bài toán 8-puzzle"""
     
     def __init__(self, learning_rate=0.1, discount_factor=0.9, exploration_rate=0.3, goal_state=None):
-        """
-        Khởi tạo thuật toán Q-learning
         
-        Args:
-            learning_rate (float): Tốc độ học (α)
-            discount_factor (float): Hệ số chiết khấu (γ)
-            exploration_rate (float): Tỉ lệ khám phá (ε)
-            goal_state (list): Trạng thái đích
-        """
         self.q_table = {}  # Bảng Q lưu giá trị Q(s,a)
         self.alpha = learning_rate
         self.gamma = discount_factor
@@ -94,16 +62,7 @@ class QLearning:
         return None
 
     def get_valid_actions(self, state):
-        """
-        Xác định các hành động hợp lệ từ trạng thái hiện tại
-        
-        Args:
-            state (list): Ma trận 3x3 biểu diễn trạng thái
-            
-        Returns:
-            list: Danh sách các hành động hợp lệ (0: lên, 1: phải, 2: xuống, 3: trái)
-            tuple: Vị trí ô trống
-        """
+       
         # Tìm vị trí ô trống
         empty_pos = self.get_empty_position(state)
         

@@ -12,44 +12,7 @@ class Node:
         return isinstance(other, Node) and self.state == other.state
 
 def simple_hill_climbing(puzzle, heuristic_func=manhattan_distance):
-    """
-    Thuật toán Simple Hill Climbing (Leo đồi đơn giản) cho bài toán 8-puzzle.
-    
-    Định nghĩa:
-    - Thuật toán này còn được gọi là tìm kiếm cực bộ tham lam vì nó chỉ tìm kiếm trạng thái 
-      lân cận tốt hơn của nó chứ không phải vượt ra ngoài trạng thái đó.
-    - Là cách đơn giản nhất để triển khai thuật toán leo đồi.
-    
-    Nguyên lý hoạt động:
-    - Chỉ kiểm tra từng trạng thái lân cận, nếu tìm thấy trạng thái tốt hơn trạng thái hiện tại thì di chuyển.
-    - Không cần phải duy trì và xử lý cây tìm kiếm vì nó chỉ giữ một trạng thái hiện tại duy nhất.
-    
-    Các bước của thuật toán:
-    1. Chọn trạng thái hiện tại (ban đầu là trạng thái khởi đầu của puzzle)
-    2. Tạo các trạng thái hàng xóm (lân cận) của trạng thái hiện tại
-    3. Đánh giá hàm mục tiêu tại mỗi trạng thái hàng xóm được đề xuất
-    4. Nếu tìm thấy trạng thái có giá trị tốt hơn, chuyển sang trạng thái đó
-    5. Lặp lại bước 2-4 cho đến khi không tìm thấy trạng thái nào tốt hơn hoặc tìm thấy trạng thái đích
-    6. Trả về đường đi đã tìm được
-    
-    Ưu điểm:
-    - Đơn giản, dễ triển khai
-    - Nhanh chóng tìm được giải pháp tốt (nếu có) trong không gian tìm kiếm đơn giản
-    - Tiết kiệm bộ nhớ vì chỉ lưu trạng thái hiện tại
-    
-    Nhược điểm:
-    - Dễ bị mắc kẹt ở cực trị địa phương (local minima)
-    - Không đảm bảo tìm ra đường đi tối ưu (ngắn nhất)
-    - Không đảm bảo tìm được lời giải ngay cả khi lời giải tồn tại
-    
-    Tham số:
-        puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-        heuristic_func: Hàm hẽuristic được sử dụng để đánh giá trạng thái (mặc định: khoảng cách Manhattan)
-    
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
+   
     # Kiểm tra tính giải được của puzzle
     if not puzzle.is_solvable():
         return None, 0

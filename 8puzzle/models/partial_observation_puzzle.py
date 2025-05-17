@@ -1,24 +1,11 @@
-"""
-Định nghĩa mô hình Partial Observation Puzzle cho 8-puzzle.
-Là mô hình trong đó biết trước một ô trong trạng thái đích.
-"""
+
 import copy
 
 class PartialObservationPuzzle:
-    """
-    Lớp đại diện cho bài toán 8-puzzle với quan sát một phần (partial observation).
-    Với partial observation, chúng ta biết trước một ô trong trạng thái đích,
-    từ đó có thể loại bỏ các trạng thái không hợp lệ trong quá trình tìm kiếm.
-    """
+   
     
     def __init__(self, known_tile_position, known_tile_value):
-        """
-        Khởi tạo puzzle với thông tin về ô đã biết trong goal state.
-        
-        Args:
-            known_tile_position (tuple): Vị trí (row, col) của ô đã biết trong goal state.
-            known_tile_value (int): Giá trị của ô đã biết trong goal state.
-        """
+      
         self.known_tile_position = known_tile_position  # (row, col)
         self.known_tile_value = known_tile_value
         

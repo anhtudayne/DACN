@@ -1,6 +1,4 @@
-"""
-Main window implementation for 8-puzzle GUI
-"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
 import time
@@ -10,7 +8,6 @@ from datetime import datetime
 from ui.puzzle_board import PuzzleBoard
 from ui.interactive_puzzle_board import InteractivePuzzleBoard
 from models.puzzle import Puzzle
-# AND-OR Search được import trực tiếp trong phương thức show_and_or_search
 from algorithms.bfs import bfs_search
 from algorithms.dfs import dfs_search
 from algorithms.ids import ids_search

@@ -1,57 +1,12 @@
-"""
-Thuật toán Search with No Observation (Tìm kiếm Không Quan Sát)
-
-Định nghĩa:
-------------
-Search with No Observation là thuật toán tìm kiếm trong môi trường không có quan sát,
-nghĩa là agent không biết trạng thái chính xác mà chỉ biết tập hợp các trạng thái có thể (belief state).
-
-Nguyên lý hoạt động:
--------------------
-1. Bắt đầu với belief state chứa tất cả các trạng thái có thể
-2. Thực hiện các hành động để thu hẹp belief state (giảm số lượng trạng thái)
-3. Mục tiêu là đạt được belief state mà tất cả các trạng thái trong đó đều là goal states
-
-Các thành phần chính:
---------------------
-1. Initial belief state: Tập hợp các trạng thái mà agent tin puzzle có thể đang ở ban đầu
-   - Trong triển khai này, chúng ta chọn 2 cấu hình đại diện (đã giảm từ 5 xuống 2 để tăng hiệu suất)
-   - Trước khi bắt đầu BFS, chúng ta mở rộng belief state ban đầu bằng cách áp dụng các hành động (UP, DOWN, LEFT, RIGHT)
-
-2. Actions: Union của tất cả các hành động hợp lệ trên các trạng thái trong belief state
-   - Các hành động: UP, DOWN, LEFT, RIGHT (di chuyển ô trống)
-
-3. Transition model: Mô tả belief state mới sau khi áp dụng một hành động
-   - Áp dụng hành động lên từng trạng thái trong belief state
-   - Loại bỏ các trạng thái trùng lặp trong belief state mới
-
-4. Goal test: Kiểm tra xem belief state có đạt mục tiêu không
-   - Belief state đạt mục tiêu khi TẤT CẢ các trạng thái trong belief state đều là các trạng thái đích
-   - Theo định nghĩa chính xác trong sách AIMA: "a belief state satisfies the goal only if all the physical states in it satisfy GOAL-TEST_P"
-
-5. Path cost: Chi phí của một đường đi
-   - Trong triển khai này, chi phí là số bước (số hành động) trong đường đi
-"""
 
 import time
 from models.sensorless_puzzle import SensorlessPuzzle
 
 class SensorlessSearch:
-    """
-    Thuật toán Search with No Observation (Tìm kiếm Không Quan Sát) cho bài toán 8-puzzle.
-    Sử dụng BFS để tìm đường đi từ initial belief state đến goal belief state.
-    Trước khi bắt đầu BFS, thuật toán mở rộng initial belief state bằng cách áp dụng tất cả các hành động có thể.
-    """
+ 
     
     def __init__(self, puzzle, max_depth=30, max_time=10):
-        """
-        Khởi tạo thuật toán tìm kiếm.
-        
-        Args:
-            puzzle: Đối tượng SensorlessPuzzle
-            max_depth: Độ sâu tìm kiếm tối đa
-            max_time: Thời gian tìm kiếm tối đa (giây)
-        """
+      
         self.puzzle = puzzle
         self.max_depth = max_depth
         self.max_time = max_time

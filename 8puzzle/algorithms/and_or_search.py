@@ -4,18 +4,7 @@ import copy
 import random
 
 def get_possible_results(puzzle, state, action, success_prob=0.9):
-    """
-    Trả về các cặp (trạng thái kết quả, xác suất) khi thực hiện action từ state.
     
-    Tham số:
-    - puzzle: Đối tượng Puzzle
-    - state: Trạng thái hiện tại
-    - action: Hành động thực hiện ('up', 'down', 'left', 'right')
-    - success_prob: Xác suất hành động thành công (mặc định: 0.9)
-    
-    Trả về:
-    - Danh sách các cặp (trạng thái kết quả, xác suất)
-    """
     results = []
     
     # Thử hành động thành công (90%)
@@ -46,49 +35,8 @@ def get_possible_results(puzzle, state, action, success_prob=0.9):
     return results
 
 def and_or_graph_search(puzzle, max_depth=30, max_nodes=10000, success_prob=0.9):
-    """
-    Thuật toán tìm kiếm AND-OR cho bài toán 8-puzzle trong môi trường không xác định.
     
-    Định nghĩa:
-    - Thuật toán tìm kiếm AND-OR là một thuật toán giải quyết bài toán trong môi trường không xác định,
-      nơi kết quả của một hành động có thể dẫn đến nhiều trạng thái khác nhau.
-    - Thuật toán xây dựng một cây tìm kiếm AND-OR, bao gồm nút OR (lựa chọn hành động) và nút AND
-      (xử lý tất cả các kết quả có thể của một hành động).
     
-    Nguyên lý hoạt động:
-    - Bắt đầu từ trạng thái ban đầu (nút OR), thuật toán khám phá các hành động có thể.
-    - Với mỗi hành động, thuật toán xử lý tất cả các kết quả có thể (nút AND).
-    - Một kế hoạch thành công phải đạt được trạng thái đích từ TẤT CẢ các kết quả có thể.
-    - Thuật toán sử dụng tìm kiếm theo chiều sâu (DFS) để xây dựng cây AND-OR.
-    
-    Các bước thực hiện:
-    1. Kiểm tra nếu trạng thái hiện tại là trạng thái đích, trả về kế hoạch rỗng.
-    2. Kiểm tra chu trình, nếu trạng thái hiện tại đã xuất hiện trên đường đi, trả về thất bại.
-    3. Với mỗi hành động có thể:
-       a. Xác định tất cả các kết quả có thể của hành động đó.
-       b. Tìm kiếm đệ quy một kế hoạch cho mỗi kết quả có thể.
-       c. Nếu tìm được kế hoạch cho tất cả các kết quả, trả về kế hoạch tổng hợp.
-    4. Nếu không tìm được kế hoạch cho bất kỳ hành động nào, trả về thất bại.
-    
-    Ưu điểm:
-    - Có thể tìm ra kế hoạch trong môi trường không xác định, nơi kết quả của hành động không thể dự đoán.
-    - Tạo ra kế hoạch điều kiện, có thể xử lý nhiều tình huống khác nhau.
-    - Đảm bảo đạt được trạng thái đích bất kể môi trường có gây ra kết quả nào.
-    
-    Nhược điểm:
-    - Tiêu tốn nhiều tài nguyên tính toán, không gian trạng thái phát triển nhanh.
-    - Có thể không tìm thấy kế hoạch nếu không gian trạng thái quá lớn hoặc không có kế hoạch.
-    - Kế hoạch kết quả có thể phức tạp và khó thực hiện trong thực tế.
-    
-    Tham số:
-    - puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-    - max_depth: Độ sâu tìm kiếm tối đa
-    - max_nodes: Số nút tối đa được phép mở rộng
-    - success_prob: Xác suất hành động thành công (mặc định: 0.9)
-    
-    Trả về:
-    - Kế hoạch điều kiện (dưới dạng cây) hoặc None nếu không tìm thấy
-    """
     # Biến đếm số nút đã mở rộng
     nodes_expanded = [0]
     

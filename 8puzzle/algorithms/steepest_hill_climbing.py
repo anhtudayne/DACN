@@ -12,48 +12,7 @@ class Node:
         return isinstance(other, Node) and self.state == other.state
 
 def steepest_hill_climbing(puzzle, heuristic_func=manhattan_distance):
-    """
-    Thuật toán Steepest-Ascent Hill Climbing (Leo đồi dốc nhất) cho bài toán 8-puzzle.
-    
-    Định nghĩa:
-    - Là một biến thể của thuật toán leo đồi đơn giản.
-    - Thuật toán này kiểm tra tất cả các nút lân cận của trạng thái hiện tại
-      và chọn một nút lân cận gần nhất với trạng thái mục tiêu.
-    
-    Nguyên lý hoạt động:
-    - Khác với leo đồi đơn giản, leo đồi dốc nhất đánh giá TẤT CẢ các trạng thái lân cận
-      trước khi chọn trạng thái tốt nhất để di chuyển.
-    - Thuật toán lựa chọn trạng thái lân cận có giá trị hàm mục tiêu tốt nhất.
-    
-    Các bước của thuật toán:
-    1. Chọn trạng thái hiện tại
-    2. Tạo tất cả các trạng thái lân cận của trạng thái hiện tại
-    3. Đánh giá hàm mục tiêu tại tất cả các trạng thái lân cận
-    4. Kiểm tra:
-       - Nếu hàm mục tiêu tại trạng thái hiện tại có giá trị cao hơn tất cả các trạng thái lân cận,
-         thì trạng thái hiện tại đã là giá trị tối ưu cục bộ, kết thúc tìm kiếm.
-       - Nếu không, lân cận có giá trị tốt nhất sẽ trở thành trạng thái hiện tại mới
-    5. Lặp lại bước 2-4 trong n lần lặp
-    6. Trả về trạng thái hiện tại và giá trị hàm mục tiêu của nó
-    
-    Ưu điểm:
-    - Tìm ra giải pháp tốt hơn so với leo đồi đơn giản vì xem xét tất cả các lân cận
-    - Ít bị mắc kẹt ở cực trị địa phương hơn so với leo đồi đơn giản
-    - Tiết kiệm bộ nhớ hơn so với các thuật toán tìm kiếm dựa trên đồ thị
-    
-    Nhược điểm:
-    - Vẫn có thể bị mắc kẹt ở cực trị địa phương
-    - Không đảm bảo tìm ra đường đi tối ưu (ngắn nhất)
-    - Thời gian xử lý lâu hơn so với leo đồi đơn giản vì đánh giá tất cả các trạng thái lân cận
-    
-    Tham số:
-        puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-        heuristic_func: Hàm hẽuristic được sử dụng để đánh giá trạng thái (mặc định: khoảng cách Manhattan)
-    
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
+   
     # Kiểm tra tính giải được của puzzle
     if not puzzle.is_solvable():
         return None, 0

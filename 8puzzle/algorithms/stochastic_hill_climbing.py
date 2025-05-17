@@ -14,52 +14,7 @@ class Node:
         return isinstance(other, Node) and self.state == other.state
 
 def stochastic_hill_climbing(puzzle, heuristic_func=manhattan_distance, max_iterations=1000, probability_threshold=0.3, restart_limit=5):
-    """
-    Thuật toán Stochastic Hill Climbing (Leo đồi ngẫu nhiên) cho bài toán 8-puzzle.
-    
-    Định nghĩa:
-    - Là một biến thể của thuật toán leo đồi đơn giản.
-    - Thay vì tìm ra hàng xóm tốt nhất, phiên bản này lựa chọn ngẫu nhiên một hàng xóm.
-    
-    Nguyên lý hoạt động:
-    - Nếu hàng xóm được chọn tốt hơn trạng thái hiện thời, hàng xóm đó sẽ được chọn làm 
-      trạng thái hiện thời và thuật toán lặp lại.
-    - Ngược lại, nếu hàng xóm được chọn không tốt hơn, thuật toán sẽ chọn ngẫu nhiên
-      một hàng xóm khác và so sánh.
-    - Thuật toán kết thúc và trả lại trạng thái hiện thời khi đã hết "kiên nhẫn".
-    
-    Các bước của thuật toán:
-    1. Chọn trạng thái hiện tại
-    2. Tạo tất cả các trạng thái lân cận của trạng thái hiện tại
-    3. Đánh giá hàm mục tiêu tại tất cả các lân cận
-    4. Kiểm tra:
-       - Nếu hàm mục tiêu tại trạng thái hiện tại có giá trị cao hơn tất cả lân cận,
-         thì trạng thái hiện tại đã là giá trị tối ưu cục bộ, kết thúc tìm kiếm.
-       - Nếu không, chọn ngẫu nhiên một lân cận, nếu tốt hơn thì chuyển sang trạng thái đó
-    5. Lặp lại bước 2-4 trong n lần lặp hoặc đến khi kiên nhẫn hết
-    6. Trả về trạng thái hiện tại và giá trị hàm mục tiêu của nó
-    
-    Ưu điểm:
-    - Khắc phục được điểm yếu về cực trị địa phương của leo đồi đơn giản
-    - Thêm yếu tố ngẫu nhiên giúp thuật toán có cơ hội thoát khỏi các cực trị địa phương
-    - Đơn giản và nhiều trường hợp hiệu quả hơn các thuật toán leo đồi khác
-    
-    Nhược điểm:
-    - Không đảm bảo tìm ra đường đi tối ưu
-    - Có thể mất nhiều thời gian để hội tụ nếu yếu tố ngẫu nhiên khiến thuật toán "lạc đường"
-    - Hiệu suất phụ thuộc nhiều vào các tham số xác suất và ngưỡng được chọn
-    
-    Tham số:
-        puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-        heuristic_func: Hàm hẽuristic được sử dụng để đánh giá trạng thái (mặc định: khoảng cách Manhattan)
-        max_iterations: Số lần lặp tối đa ("kiên nhẫn")
-        probability_threshold: Ngưỡng xác suất cho việc chấp nhận bước đi xấu hơn
-        restart_limit: Số lần khởi động lại ngẫu nhiên
-    
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
+  
     # Kiểm tra xem puzzle có thể giải được không
     if not puzzle.is_solvable():
         return None, 0

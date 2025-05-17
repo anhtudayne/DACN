@@ -1,26 +1,3 @@
-'''=================================================================================
- THUẬT TOÁN MIN-CONFLICTS CHO BÀI TOÁN 8-PUZZLE CSP
-=================================================================================
-
-1. ĐỊNH NGHĨA:
-   Min-Conflicts là thuật toán tìm kiếm cục bộ (local search) dùng để giải quyết
-   các bài toán thỏa mãn ràng buộc (CSP - Constraint Satisfaction Problem).
-   Với bài toán 8-puzzle, mục tiêu là tìm trạng thái thỏa mãn ràng buộc: mỗi số
-   từ 0-8 xuất hiện đúng một lần trên bảng 3x3.
-
-2. NGUYÊN LÝ HOẠT ĐỘNG:
-   a. Khởi tạo ngẫu nhiên một trạng thái ban đầu (thường có xung đột)
-   b. Lặp lại cho đến khi tìm thấy trạng thái thỏa mãn hoặc đạt số lần lặp tối đa:
-      - Tìm các biến (ô) đang xung đột (có giá trị trùng với ô khác)
-      - Chọn ngẫu nhiên một biến xung đột
-      - Gán cho biến đó giá trị làm giảm tối đa số xung đột
-      - Cập nhật trạng thái
-
-3. TÍNH CHẤT QUAN TRỌNG:
-   - Bắt đầu với phân công đầy đủ (không như thuật toán backtracking bắt đầu từ phân công rỗng)
-   - Không đảm bảo tìm ra trạng thái đích cụ thể, chỉ đảm bảo tìm ra trạng thái thỏa mãn ràng buộc
-   - Hiệu quả với nhiều bài toán CSP lớn trong thực tế
-'''
 
 import time
 import random
@@ -32,15 +9,7 @@ class CSPMinConflicts:
     """Thuật toán Min-Conflicts cho bài toán 8-puzzle"""
     
     def __init__(self, visualization_callback=None, status_callback=None, delay=0.3, max_iterations=1000):
-        """
-        Khởi tạo thuật toán Min-Conflicts
-        
-        Args:
-            visualization_callback: Hàm callback để hiển thị trạng thái
-            status_callback: Hàm callback để cập nhật trạng thái
-            delay: Thời gian chờ giữa các bước (giây)
-            max_iterations: Số lần lặp tối đa trước khi dừng
-        """
+       
         self.visualization_callback = visualization_callback
         self.status_callback = status_callback
         self.delay = delay

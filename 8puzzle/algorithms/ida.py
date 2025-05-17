@@ -11,40 +11,11 @@ class Node:
         self.f = 0                  # Tổng chi phí (f = g + h)
 
 def ida_star_search(puzzle):
-    """
-    Thuật toán IDA* (Iterative Deepening A*) cho bài toán 8-puzzle.
-    
-    Định nghĩa:
-    IDA* (Iterative Deepening A*) là một thuật toán tìm kiếm thông minh, kết hợp ưu điểm của A* và Iterative Deepening.
-    
-    Nguyên lý hoạt động:
-    - Sử dụng kỹ thuật “tăng dần ngưỡng” (iterative deepening) dựa trên giá trị f = g + h.
-    - Thực hiện nhiều lần DFS với ngưỡng cost giới hạn tăng dần.
-    - Tại mỗi vòng lặp, chỉ khám phá các nút có tổng chi phí f ≤ ngưỡng hiện tại.
-    - Ngưỡng mới là giá trị f nhỏ nhất vượt quá ngưỡng hiện tại trong vòng lặp trước.
-    
-    Ưu điểm:
-    - Đảm bảo tìm ra đường đi tối ưu (ngắn nhất) giống như A*.
-    - Tiết kiệm bộ nhớ hơn so với A* vì không cần duy trì hàng đợi ưu tiên.
-    - Đặc biệt hiệu quả trong các bài toán có không gian trạng thái lớn, khó lưu trữ toàn bộ biên.
-    
-    Nhược điểm:
-    - Có thể phải khám phá lại nhiều nút ở các vòng lặp khác nhau.
-    - Trường hợp xấu nhất có thể chậm hơn A* vì phải lặp lại công việc.
-    
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
-    # Kiểm tra tính giải được của puzzle
+   
     if not puzzle.is_solvable():
         return None, 0
-
-    # Thiết lập ngưỡng ban đầu bằng giá trị heuristic của trạng thái đầu
     threshold = manhattan_distance(puzzle.initial_state, puzzle.goal_state)
-    # Đường đi hiện tại (ban đầu chỉ có trạng thái khởi đầu)
     path = [puzzle.initial_state]
-    # Sử dụng list để có thể thay đổi giá trị trong hàm đệ quy
     nodes_explored = [0]
 
     def search(path, g, threshold):

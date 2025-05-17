@@ -6,10 +6,7 @@ import numpy as np
 import copy
 
 class Chromosome:
-    """
-    Lớp Chromosome đại diện cho một cá thể trong quần thể di truyền.
-    Mỗi cá thể là một chuỗi các hành động di chuyển từ trạng thái ban đầu đến trạng thái đích.
-    """
+   
     def __init__(self, moves=None, puzzle=None, initial_state=None):
         self.moves = moves if moves else []  # Chuỗi các bước di chuyển
         self.puzzle = puzzle  # Đối tượng puzzle
@@ -127,17 +124,7 @@ class Chromosome:
         return path
 
 def initialize_population(puzzle, pop_size=100, max_chromosome_length=50):
-    """
-    Khởi tạo quần thể ban đầu với các cá thể ngẫu nhiên.
-    
-    Tham số:
-    - puzzle: Đối tượng Puzzle
-    - pop_size: Kích thước quần thể
-    - max_chromosome_length: Độ dài tối đa của mỗi cá thể (số bước đi tối đa)
-    
-    Trả về:
-    - Danh sách các cá thể (Chromosome)
-    """
+   
     population = []
     
     # Tạo một số cá thể "thông minh" dựa trên các hành động hợp lệ
@@ -396,68 +383,10 @@ def mutation(chromosome, mutation_rate=0.1, max_length_change=3):
     return mutated
 
 def genetic_algorithm(puzzle, heuristic_func=manhattan_distance, pop_size=100, max_generations=100, tournament_size=5, elite_size=10, mutation_rate=0.1, crossover_rate=0.7, max_chromosome_length=50, early_stopping=20, max_time=30):
-    """
-    Thuật toán Di truyền (Genetic Algorithm) cho bài toán 8-puzzle.
     
-    Định nghĩa:
-    - Thuật toán di truyền là một phương pháp tìm kiếm dựa trên nguyên lý chọn lọc tự nhiên và di truyền học.
-    - Thuật toán mô phỏng quá trình tiến hóa tự nhiên để tìm kiếm các lời giải tối ưu hoặc gần tối ưu.
-    
-    Nguyên lý hoạt động:
-    - Mỗi cá thể (chromosome) đại diện cho một lời giải tiềm năng của bài toán.
-    - Quần thể các cá thể phát triển qua các thế hệ thông qua các quá trình:
-      * Chọn lọc (Selection): Chọn các cá thể phù hợp nhất để sinh sản
-      * Lai ghép (Crossover): Kết hợp gen của các cá thể được chọn để tạo cá thể mới
-      * Đột biến (Mutation): Thay đổi ngẫu nhiên các gen để đảm bảo đa dạng
-    - Phát triển qua nhiều thế hệ, quần thể sẽ hội tụ về phía các lời giải tốt hơn.
-    
-    Các bước thực hiện:
-    1. Khởi tạo quần thể ban đầu với các cá thể ngẫu nhiên.
-    2. Đánh giá độ thích nghi (fitness) của mỗi cá thể trong quần thể.
-    3. Lặp lại cho đến khi đạt điều kiện dừng:
-       a. Chọn lọc: Chọn các cá thể để nhân giống dựa trên độ thích nghi
-       b. Lai ghép: Kết hợp các cá thể được chọn để tạo thành các cá thể con
-       c. Đột biến: Thực hiện đột biến ngẫu nhiên trên các cá thể con
-       d. Thế hệ mới: Thay thế cả quần thể hoặc một phần bằng các cá thể mới
-       e. Đánh giá lại quần thể
-    4. Trả về cá thể có độ thích nghi tốt nhất (lời giải tốt nhất tìm được).
-    
-    Ưu điểm:
-    - Có khả năng tìm kiếm hiệu quả trong không gian trạng thái rộng lớn, phức tạp.
-    - Khả năng tìm kiếm song song nhiều vùng của không gian trạng thái.
-    - Không dễ bị kẹt trong các cực trị địa phương nhờ cơ chế đột biến và lai ghép.
-    - Linh hoạt, dễ dàng điều chỉnh tham số để phù hợp với bài toán cụ thể.
-    - Không đòi hỏi nhiều kiến thức chuyên sâu về bài toán, chỉ cần một hàm đánh giá độ thích nghi.
-    
-    Nhược điểm:
-    - Không đảm bảo tìm được lời giải tối ưu toàn cục.
-    - Có thể hội tụ chậm và mất nhiều thời gian tính toán.
-    - Kết quả không ổn định, có thể thay đổi giữa các lần chạy do yếu tố ngẫu nhiên.
-    - Đòi hỏi phải điều chỉnh nhiều tham số (kích thước quần thể, tỷ lệ đột biến, tỷ lệ lai ghép...) để đạt hiệu suất tốt.
-    - Tốn kém tài nguyên tính toán, đặc biệt với quần thể lớn và nhiều thế hệ.
-    
-    Tham số:
-    - puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-    - heuristic_func: Hàm đánh giá heuristic, mặc định là khoảng cách Manhattan
-    - pop_size: Kích thước quần thể
-    - max_generations: Số thế hệ tối đa
-    - elite_size: Số cá thể uu tú nhất được giữ lại giữa các thế hệ
-    - mutation_rate: Tỷ lệ đột biến
-    - crossover_rate: Tỷ lệ lai ghép
-    - max_chromosome_length: Độ dài tối đa của chuỗi bước di chuyển
-    - early_stopping: Số thế hệ liên tục không cải thiện trước khi dừng sớm
-    - tournament_size: Kích thước giải đấu cho quá trình chọn lọc
-    - max_time: Thời gian tối đa chạy thuật toán (giây)
-    
-    Trả về:
-    - (đường đi từ trạng thái ban đầu đến đích, số nút đã khám phá) hoặc (None, số nút đã khám phá)
-    """
-    
-    # Kiểm tra xem puzzle có thể giải được không
     if not puzzle.is_solvable():
         return None, 0
     
-    # Khởi tạo thời gian bắt đầu
     start_time = time.time()
     
     # Khởi tạo quần thể ban đầu

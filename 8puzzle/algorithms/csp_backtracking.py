@@ -28,35 +28,16 @@ class CSPBacktracking:
         self.states_explored = 0
         
     def is_complete(self, assignment):
-        """
-        Kiểm tra xem đã gán tất cả giá trị cho puzzle và thỏa mãn tất cả ràng buộc chưa
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            bool: True nếu đã gán tất cả giá trị và thỏa mãn tất cả ràng buộc
-        """
+       
         # Kiểm tra xem đã gán đầy đủ 9 vị trí chưa
         if len(assignment) != 9:  # 9 ô trên bảng 3x3
             return False
         
-        # Kiểm tra xem tất cả ràng buộc có được thỏa mãn không
-        # (trong trường hợp này, ràng buộc là mỗi giá trị từ 0-8 chỉ xuất hiện đúng một lần)
-        # Điều này đã được kiểm tra trong is_valid() và mỗi bước
         
         return True  # Nếu đã gán đủ 9 vị trí và thỏa mãn tất cả ràng buộc
     
     def is_valid(self, assignment):
-        """
-        Kiểm tra xem assignment có hợp lệ không (mỗi giá trị 0-8 chỉ xuất hiện một lần)
         
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            bool: True nếu assignment hợp lệ
-        """
         # Lấy danh sách các giá trị trong assignment
         values = list(assignment.values())
         
@@ -72,32 +53,13 @@ class CSPBacktracking:
         return True
     
     def is_solvable(self, assignment):
-        """
-        Trong CSP thuần túy, bất kỳ gán hoàn chỉnh nào thỏa mãn các ràng buộc đều được coi là 'giải được'
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            bool: True nếu thỏa mãn các ràng buộc của CSP
-        """
-        # Trong CSP thuần túy, chúng ta không cần kiểm tra tính giải được dựa trên nghịch thế
-        # Vì bất kỳ gán hoàn chỉnh nào thỏa mãn các ràng buộc đều được coi là một lời giải
-        
+       
         # Kiểm tra mỗi số từ 0-8 chỉ xuất hiện đúng một lần (ràng buộc chính)
         values = list(assignment.values())
         return len(values) == len(set(values)) and all(0 <= v <= 8 for v in values)
     
     def select_unassigned_variable(self, assignment):
-        """
-        Chọn vị trí tiếp theo để gán giá trị một cách ngẫu nhiên
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            tuple: Vị trí (row, col) tiếp theo để gán hoặc None nếu không có
-        """
+       
         # Tìm các vị trí chưa được gán
         unassigned = []
         for row in range(3):
@@ -114,38 +76,18 @@ class CSPBacktracking:
         return random.choice(unassigned)
     
     def order_domain_values(self, var, assignment):
-        """
-        Trả về tất cả các giá trị có thể (0-8) một cách ngẫu nhiên, không quan tâm đến việc đã sử dụng hay chưa
-        
-        Args:
-            var: Vị trí (row, col) cần gán giá trị
-            assignment: Dictionary hiện tại
-            
-        Returns:
-            list: Danh sách tất cả giá trị từ 0-8, sắp xếp ngẫu nhiên
-        """
-        # Lấy tất cả các giá trị từ 0-8, không loại bỏ các giá trị đã sử dụng
+       
         all_values = list(range(9))  # 0-8
         
-        # Xáo trộn các giá trị một cách ngẫu nhiên
         import random
         random.shuffle(all_values)
         
         return all_values
     
     def backtrack(self, assignment):
-        """
-        Thuật toán backtracking để tìm trạng thái thỏa mãn ràng buộc
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            dict: Gán hoàn chỉnh thỏa mãn tất cả ràng buộc, hoặc None nếu không tìm thấy
-        """
+       
         self.states_explored += 1
         
-        # Kiểm tra nếu đã hoàn thành - tất cả ô đã được gán và thỏa mãn các ràng buộc
         if self.is_complete(assignment):
             return assignment
         
@@ -195,15 +137,7 @@ class CSPBacktracking:
         return None
     
     def create_state_from_assignment(self, assignment):
-        """
-        Tạo trạng thái puzzle từ assignment
-        
-        Args:
-            assignment: Dictionary với key là vị trí (row, col) và value là giá trị từ 0-8
-            
-        Returns:
-            list: Trạng thái puzzle 2D
-        """
+     
         state = [[0 for _ in range(3)] for _ in range(3)]
         for (row, col), value in assignment.items():
             state[row][col] = value

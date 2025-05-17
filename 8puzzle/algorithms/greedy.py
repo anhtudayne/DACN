@@ -15,28 +15,7 @@ class Node:
         return isinstance(other, Node) and self.state == other.state
 
 def greedy_search(puzzle):
-    """
-    Thuật toán Greedy Search (Tìm kiếm tham lam) cho bài toán 8-puzzle.
-    
-    Nguyên lý hoạt động:
-    - Thuật toán Greedy Search lựa chọn nút tiếp theo dựa trên giá trị heuristic thấp nhất.
-    - Sử dụng khoảng cách Manhattan từ trạng thái hiện tại đến trạng thái đích làm heuristic.
-    - Luôn chọn nút có vẻ "hứa hẹn" nhất tại mỗi bước, không quan tâm đến chi phí đường đi từ đầu đến hiện tại.
-    
-    Ưu điểm:
-    - Tốc độ nhanh, thường tìm ra lời giải trong thời gian ngắn.
-    - Tiêu tốn ít bộ nhớ hơn so với BFS vì chỉ mở rộng các nút hứa hẹn.
-    - Hiệu quả trong không gian trạng thái lớn với heuristic tốt.
-    
-    Nhược điểm:
-    - Không đảm bảo tìm ra đường đi ngắn nhất.
-    - Có thể bị mắc kẹt trong minimum cục bộ nếu heuristic không tốt.
-    - Phụ thuộc nhiều vào chất lượng của hàm heuristic được sử dụng.
-    
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
+   
     if not puzzle.is_solvable():
         return None, 0
     # Khởi tạo nút bắt đầu

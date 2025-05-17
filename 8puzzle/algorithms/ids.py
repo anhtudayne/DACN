@@ -1,41 +1,13 @@
 """Iterative Deepening Search implementation for 8-puzzle"""
 
 def ids_search(puzzle, max_depth=50):
-    """
-    Thuật toán IDS (Iterative Deepening Search - Tìm kiếm sâu dần) cho bài toán 8-puzzle.
-    
-    Nguyên lý hoạt động:
-    - IDS kết hợp ưu điểm của cả BFS và DFS.
-    - Thực hiện một loạt các DFS với độ sâu giới hạn tăng dần.
-    - Bắt đầu với độ sâu 0, sau đó tăng dần và chạy DFS với mỗi độ sâu.
-    - Đảm bảo tìm ra đường đi ngắn nhất như BFS nhưng tiết kiệm bộ nhớ như DFS.
-    
-    Ưu điểm:
-    - Đảm bảo tìm ra đường đi ngắn nhất, giống như BFS.
-    - Tiết kiệm bộ nhớ hơn BFS vì chỉ lưu trữ đường đi hiện tại.
-    - Hoạt động tốt với không gian trạng thái lớn.
-    
-    Nhược điểm:
-    - Lặp lại việc khám phá các nút ở độ sâu nông trong mỗi lần lặp.
-    - Tổng thời gian thực thi có thể dài hơn BFS.
-    
-    Tham số:
-        puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-        max_depth: Độ sâu tối đa để tìm kiếm, mặc định là 50
-        
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
+   
     if not puzzle.is_solvable():
         return None, 0
     
-    # Biến đếm tổng số nút đã khám phá
     total_nodes_explored = 0
     
-    # Thực hiện DFS với độ sâu giới hạn tăng dần
     for depth_limit in range(max_depth + 1):
-        # Gọi hàm DLS (Depth-Limited Search)
         result, nodes = depth_limited_search(puzzle, depth_limit)
         total_nodes_explored += nodes
         
@@ -47,18 +19,7 @@ def ids_search(puzzle, max_depth=50):
     return None, total_nodes_explored
 
 def depth_limited_search(puzzle, depth_limit):
-    """
-    Thuật toán DFS với giới hạn độ sâu (Depth-Limited Search)
-    
-    Tham số:
-        puzzle: Đối tượng Puzzle chứa trạng thái đầu và đích
-        depth_limit: Độ sâu tối đa được phép tìm kiếm
-        
-    Trả về:
-        (path, nodes_explored): Đường đi từ trạng thái đầu đến đích, số nút đã khám phá
-        hoặc (None, nodes_explored) nếu không tìm thấy đường đi
-    """
-    # Khởi tạo với trạng thái bắt đầu
+   
     stack = [[puzzle.initial_state]]
     visited = {puzzle.get_state_string(puzzle.initial_state)}
     nodes_explored = 1

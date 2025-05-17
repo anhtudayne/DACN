@@ -1,57 +1,12 @@
-"""
-Thuật toán Searching with Partial Observation (Tìm kiếm Với Quan Sát Một Phần)
 
-Định nghĩa:
-------------
-Searching with Partial Observation là thuật toán tìm kiếm trong môi trường có quan sát một phần,
-nghĩa là agent biết một phần thông tin về trạng thái đích.
-
-Nguyên lý hoạt động:
--------------------
-1. Bắt đầu với một belief state chứa tất cả các trạng thái có thể
-2. Biết trước một ô trong trạng thái đích
-3. Thực hiện các hành động để thu hẹp belief state
-4. Mục tiêu là đạt được belief state mà tất cả các trạng thái đều thỏa mãn điều kiện goal
-
-Các thành phần chính:
---------------------
-1. Initial belief state: Tập hợp các trạng thái mà agent tin puzzle có thể đang ở ban đầu
-   - Trong triển khai này, chúng ta chọn 5 cấu hình đại diện cố định
-
-2. Actions: Union của tất cả các hành động hợp lệ trên các trạng thái trong belief state
-   - Các hành động: UP, DOWN, LEFT, RIGHT (di chuyển ô trống)
-
-3. Transition model: Mô tả belief state mới sau khi áp dụng một hành động
-   - Áp dụng hành động lên từng trạng thái trong belief state
-   - Loại bỏ các trạng thái trùng lặp trong belief state mới
-   - Loại bỏ các trạng thái không phù hợp với observation
-
-4. Goal test: Kiểm tra xem belief state có đạt mục tiêu không
-   - Belief state đạt mục tiêu khi TẤT CẢ các trạng thái trong belief state đều là các trạng thái đích
-   - Theo định nghĩa trong sách AIMA: "a belief state satisfies the goal only if all the physical states in it satisfy GOAL-TEST_P"
-
-5. Path cost: Chi phí của một đường đi
-   - Trong triển khai này, chi phí là số bước (số hành động) trong đường đi
-"""
 
 import time
 from models.partial_observation_puzzle import PartialObservationPuzzle
 
 class PartialObservationSearch:
-    """
-    Thuật toán tìm kiếm với quan sát một phần cho bài toán 8-puzzle.
-    Sử dụng BFS để tìm đường đi từ initial belief state đến goal belief state.
-    """
     
     def __init__(self, puzzle, max_depth=30, max_time=10):
-        """
-        Khởi tạo thuật toán tìm kiếm.
-        
-        Args:
-            puzzle: Đối tượng PartialObservationPuzzle
-            max_depth: Độ sâu tìm kiếm tối đa
-            max_time: Thời gian tìm kiếm tối đa (giây)
-        """
+       
         self.puzzle = puzzle
         self.max_depth = max_depth
         self.max_time = max_time
@@ -164,11 +119,7 @@ class PartialObservationSearch:
         return None
     
     def _belief_state_to_hash(self, belief_state):
-        """
-        Chuyển đổi belief state thành hash để lưu trữ trong explored.
-        Vì belief state là một tập hợp, nên thứ tự các trạng thái không quan trọng.
-        Do đó, chúng ta sắp xếp các trạng thái để đảm bảo tính nhất quán.
-        """
+       
         # Sắp xếp các trạng thái để đảm bảo tính nhất quán
         sorted_states = sorted([str(state) for state in belief_state])
         return tuple(sorted_states)

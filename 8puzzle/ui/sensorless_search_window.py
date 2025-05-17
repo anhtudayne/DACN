@@ -8,10 +8,7 @@ from models.sensorless_puzzle import SensorlessPuzzle
 from algorithms.sensorless_search import SensorlessSearch
 
 class SensorlessSearchWindow:
-    """
-    Cửa sổ giao diện người dùng cho thuật toán Search with No Observation (Tìm kiếm Không Quan Sát).
-    Cho phép người dùng bắt đầu tìm kiếm, xem kết quả và điều hướng qua các bước của đường đi.
-    """
+   
     
     def __init__(self, parent):
         """

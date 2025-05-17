@@ -1,6 +1,4 @@
-"""
-Test script for evaluating the correctness of various algorithms for 8-puzzle
-"""
+
 import time
 from models.puzzle import Puzzle
 from algorithms.simulated_annealing import simulated_annealing

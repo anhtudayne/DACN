@@ -1,6 +1,4 @@
-"""
-Cửa sổ giao diện người dùng cho thuật toán tìm kiếm với quan sát một phần (Partial Observation Search).
-"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
