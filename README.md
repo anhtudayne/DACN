@@ -1,6 +1,8 @@
 # BÁO CÁO ĐỒ ÁN CÁ NHÂN MÔN TRÍ TUỆ NHÂN TẠO
 **Link github:** https://github.com/anhtudayne/DACN.git 
 
+**Link video:** https://drive.google.com/file/d/1I2LOKxMb_dGliEbqDR4ZOXXn9vzFnvoK/view?usp=sharing
+
 **Họ và tên:** Võ Văn Tú
 
 **Mã số sinh viên:** 23110359
